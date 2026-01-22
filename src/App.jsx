@@ -82,6 +82,7 @@ const buildComparison = (firstUnitPrice, secondUnitPrice) => {
   };
 };
 
+// 商品情報の入力カード
 const InputCard = ({
   index,
   item,
@@ -123,6 +124,7 @@ const InputCard = ({
   </section>
 );
 
+// 100gあたり価格の表示カード
 const ResultCard = ({
   label,
   unitPrice,
@@ -148,8 +150,10 @@ const ResultCard = ({
 );
 
 function App() {
+  // 2商品の入力状態をまとめて管理
   const [items, setItems] = useState([createInitialItem(), createInitialItem()]);
 
+  // 入力値の変更を受け取り、指定された商品のフィールドだけ更新
   const handleChange = (index, key, value) => {
     setItems((prev) =>
       prev.map((item, itemIndex) =>
@@ -158,6 +162,7 @@ function App() {
     );
   };
 
+  // 入力の変化に合わせて、100gあたり価格と比較結果を算出
   const { firstUnitPrice, secondUnitPrice, comparison } = useMemo(() => {
     const [first, second] = items;
     const firstWeight = parsePositiveNumber(first.weight);
@@ -180,6 +185,7 @@ function App() {
     secondUnitPrice != null &&
     firstUnitPrice < secondUnitPrice;
 
+  // 2商品目のほうが安いかどうか
   const isSecondCheaper =
     firstUnitPrice != null &&
     secondUnitPrice != null &&
@@ -203,6 +209,7 @@ function App() {
 
         <section className="grid gap-6 md:grid-cols-2">
           {items.map((item, index) => (
+            // 2枚分の入力カードを生成
             <InputCard
               key={`item-${index + 1}`}
               index={index + 1}
@@ -212,6 +219,7 @@ function App() {
           ))}
         </section>
 
+        {/* 比較結果の表示エリア */}
         <section className="rounded-3xl bg-white p-6 shadow-lg ring-1 ring-slate-200">
           <h2 className="text-lg font-semibold text-slate-800">比較結果</h2>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
