@@ -1,20 +1,24 @@
 import { useMemo, useState } from "react";
 
+// 日本円の数値表記を統一するためのフォーマッター
 const numberFormatter = new Intl.NumberFormat("ja-JP", {
   maximumFractionDigits: 2,
 });
 
+// 金額表示用の通貨フォーマッター
 const currencyFormatter = new Intl.NumberFormat("ja-JP", {
   style: "currency",
   currency: "JPY",
   maximumFractionDigits: 2,
 });
 
+// 入力フォームの初期状態を生成
 const createInitialItem = () => ({
   weight: "",
   price: "",
 });
 
+// 空欄や0以下は無効として扱う
 const parsePositiveNumber = (value) => {
   if (value === "") {
     return null;
@@ -28,6 +32,7 @@ const parsePositiveNumber = (value) => {
   return numeric;
 };
 
+// 価格は0以上であれば有効として扱う
 const parseNonNegativeNumber = (value) => {
   if (value === "") {
     return null;
@@ -41,6 +46,7 @@ const parseNonNegativeNumber = (value) => {
   return numeric;
 };
 
+// 100gあたりの価格を計算
 const calculateUnitPrice = (weight, price) => {
   if (weight == null || price == null || weight === 0) {
     return null;
@@ -49,6 +55,7 @@ const calculateUnitPrice = (weight, price) => {
   return (price / weight) * 100;
 };
 
+// 2つの商品の比較メッセージを生成
 const buildComparison = (firstUnitPrice, secondUnitPrice) => {
   if (firstUnitPrice == null || secondUnitPrice == null) {
     return null;
